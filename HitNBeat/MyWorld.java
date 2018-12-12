@@ -8,10 +8,15 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class MyWorld extends World
 {
-   
+    private int tempo; //in bpm
+    private long frame = 1;// 1/60 second
+    private long lastTouchingFrame = 0;
+    private int actionFrameWindow = 11;
+    private int missinputFrame = 0;
+    // Controlls the beat
+    private int tempoUnitsCount = 0;
+    private GreenfootSound backgroundMusic;
     
-    
-        
     // Controlling actors
     
     // Game state
@@ -28,7 +33,12 @@ public class MyWorld extends World
         Greenfoot.setSpeed(50);
         prepare();
     }
-    
+    public void setTempo(int tempo){
+        this.tempo = tempo;
+    }
+    public void resetMetronome(){
+        this.frame = 1;
+    }
     /**
      * Prepare the world for the start of the program.
      * That is: create the initial objects and add them to the world.
@@ -49,7 +59,7 @@ public class MyWorld extends World
         // Set the game state
         state = GameState.PLAYING;
         Greenfoot.start();
-        GreenfootSound backgroundMusic = new GreenfootSound("18 - Knight to C-Sharp (Deep Blues).mp3");
+        backgroundMusic = new GreenfootSound("18 - Knight to C-Sharp (Deep Blues).mp3");
         backgroundMusic.setVolume(30);
         backgroundMusic.play();
     }
@@ -57,22 +67,57 @@ public class MyWorld extends World
     // Game events                                                                //
     // These methods are invoked to proccess main game events.                    //
     // ========================================================================== //   
+    //Dictates when a input is gonna be considered on or off beat
     public boolean isActionTime()
-    {
-        Metronome metronome = getObjects(Metronome.class).get(0);
-        if(metronome.isActionTime()){
+    {   
+        Metronome metronome = this.getObjects(Metronome.class).get(0);
+        TempoUnit unit = metronome.getNearTempoUnit();
+        if(unit != null){
+            if(unit.isActionTime()){
+            lastTouchingFrame = frame;    
+            return true;
+            }
+        //Right now there is a 15 frame window for the input be considered on beat.
+        //4 frames of touching tempo units + 11 frames form actionFrameWindow
+        }else if(frame - lastTouchingFrame <= actionFrameWindow){
             return true;
         }
+        
         return false;
+    }
+    public void createTempoUnit(int tempo){
+        if (tempoUnitsCount == 0)
+        {   
+            TempoUnit rightUnit = new RightTempoUnit(this.getWidth());
+            TempoUnit leftUnit = new LeftTempoUnit(0);
+            int y = 360;
+            this.addObject(rightUnit,this.getWidth(),y);
+            this.addObject(leftUnit,0,y);
+                     
+        }
+        
+        // Synchronizes spawn time off TempoUnits with tempo (60frames x 60sec/bpm)
+        if (tempoUnitsCount++ == 3600/tempo)
+        {
+            tempoUnitsCount=0   ;
+        }   
     }
     public void playerHit()
     {
         
     }
     
-    public void playerOffBeatInput()
+    public boolean checkOffBeatInput()
     {
-       
+       if(Greenfoot.isKeyDown("left") || Greenfoot.isKeyDown("right")){
+           //TODO: file is playing multiple times when a offbeat input happens
+
+               Greenfoot.playSound("sfx_missedbeat_01.mp3");
+               
+
+           return true;
+       }
+       return false;
     }
     public void act()
     {
@@ -106,9 +151,13 @@ public class MyWorld extends World
     
     public void actPlaying()
     {
-        Metronome metronome = (Metronome)this.getObjects(Metronome.class).get(0);
-        metronome.startMetronome(123);
+        createTempoUnit(123);
+        if(Greenfoot.isKeyDown("escape")){
+            Greenfoot.stop();
+            backgroundMusic.stop();
         }
+        frame++;
+    }
         
     public void actGameOver()
     {
