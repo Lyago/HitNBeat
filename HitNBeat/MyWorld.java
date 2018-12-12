@@ -48,6 +48,10 @@ public class MyWorld extends World
         
         // Set the game state
         state = GameState.PLAYING;
+        Greenfoot.start();
+        GreenfootSound backgroundMusic = new GreenfootSound("18 - Knight to C-Sharp (Deep Blues).mp3");
+        backgroundMusic.setVolume(30);
+        backgroundMusic.play();
     }
     // ========================================================================== //
     // Game events                                                                //
@@ -81,6 +85,7 @@ public class MyWorld extends World
             }            
             case PLAYING:
             {                  
+                
                 actPlaying();   
                 break;
             }            
@@ -103,8 +108,8 @@ public class MyWorld extends World
     {
         Metronome metronome = (Metronome)this.getObjects(Metronome.class).get(0);
         metronome.startMetronome(123);
-    }
-    
+        }
+        
     public void actGameOver()
     {
         if(true)
