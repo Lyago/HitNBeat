@@ -1,0 +1,44 @@
+Class documentation
+<---- javadoc command: ---->
+C:\Program Files (x86)\Greenfoot\jdk\bin\javadoc.exe
+-author
+-version
+-nodeprecated
+-protected
+-Xdoclint:none
+-noindex
+-notree
+-nohelp
+-nonavbar
+-source
+1.8
+-classpath
+C:\Program Files (x86)\Greenfoot\lib\extensions\greenfoot.jar;C:\Program Files (x86)\Greenfoot\lib\bluejcore.jar;C:\Program Files (x86)\Greenfoot\lib\bluejeditor.jar;C:\Program Files (x86)\Greenfoot\lib\bluejext.jar;C:\Program Files (x86)\Greenfoot\lib\AppleJavaExtensions.jar;C:\Program Files (x86)\Greenfoot\lib\junit-4.11.jar;C:\Program Files (x86)\Greenfoot\lib\hamcrest-core-1.3.jar;C:\Program Files (x86)\Greenfoot\lib\bluej.jar;C:\Program Files (x86)\Greenfoot\lib\diffutils-1.2.1.jar;C:\Program Files (x86)\Greenfoot\lib\commons-logging-api-1.1.2.jar;C:\Program Files (x86)\Greenfoot\lib\jl1.0.1.jar;C:\Program Files (x86)\Greenfoot\lib\opencsv-2.3.jar;C:\Program Files (x86)\Greenfoot\lib\xom-1.2.9.jar;C:\Program Files (x86)\Greenfoot\lib\lang-stride.jar;C:\Program Files (x86)\Greenfoot\lib\nsmenufx-2.1.4.jar;C:\Program Files (x86)\Greenfoot\lib\richtextfx-fat-0.9.0.jar;C:\Program Files (x86)\Greenfoot\lib\guava-17.0.jar;C:\Program Files (x86)\Greenfoot\lib\javassist-3.18.0.jar;C:\Program Files (x86)\Greenfoot\lib\commons-vfs2-2.0.jar;C:\Program Files (x86)\Greenfoot\lib\httpclient-4.1.1.jar;C:\Program Files (x86)\Greenfoot\lib\httpcore-4.1.jar;C:\Program Files (x86)\Greenfoot\lib\httpmime-4.1.1.jar;C:\Users\Lyago\HitNBeat
+-d
+C:\Users\Lyago\HitNBeat\doc
+-encoding
+UTF-8
+-charset
+UTF-8
+C:\Users\Lyago\HitNBeat\MyWorld.java
+<---- end of javadoc command ---->
+Loading source file C:\Users\Lyago\HitNBeat\MyWorld.java...
+C:\Users\Lyago\HitNBeat\MyWorld.java:104: error: <identifier> expected
+        metronome.
+                  ^
+C:\Users\Lyago\HitNBeat\MyWorld.java:104: error: not a statement
+        metronome.
+                 ^
+C:\Users\Lyago\HitNBeat\MyWorld.java:108: error: illegal start of expression
+    public void actGameOver()
+    ^
+C:\Users\Lyago\HitNBeat\MyWorld.java:108: error: ';' expected
+    public void actGameOver()
+          ^
+C:\Users\Lyago\HitNBeat\MyWorld.java:108: error: ';' expected
+    public void actGameOver()
+                             ^
+C:\Users\Lyago\HitNBeat\MyWorld.java:115: error: reached end of file while parsing
+}
+ ^
+6 errors
