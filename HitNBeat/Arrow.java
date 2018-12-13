@@ -9,7 +9,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class Arrow extends TempoUnit
 {
     public Arrow(int startLocation){
-        super(startLocation);
+        this.startLocation = startLocation;
     }
     /**
      * Act - do whatever the RigthTempoUnit wants to do. This method is called whenever

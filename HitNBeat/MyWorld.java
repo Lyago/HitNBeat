@@ -20,9 +20,10 @@ public class MyWorld extends World
     
     // Controlling actors
     private adventurer p1;
-    private Score score;
+    private Life       life;
+    private Score      score;
     private MenuButton button;
-    private GameOver gameOver;
+    private GameOver   gameOver;
     private FinalScore finalScore;
     // Game state
     private enum GameState{MENU,PLAYING,GAMEOVER};    
@@ -59,11 +60,12 @@ public class MyWorld extends World
         
         Metronome metronome = new Metronome();
         addObject(metronome,getWidth()/3,4*getHeight()/7);
-        TempoUnit tempoUnit = new TempoUnit(getWidth());
-        addObject(tempoUnit,getWidth(),4*getHeight()/7);
+        Dagger dagger = new Dagger(getWidth());
+        addObject(dagger,getWidth(),4*getHeight()/7);
         p1 = new adventurer("right","up","left", 6);
         addObject(p1,getWidth()/6,getHeight()/2);
         score= new Score();
+        life = new Life();
         addObject(score,getWidth()/2,15);
         
         
@@ -121,10 +123,17 @@ public class MyWorld extends World
     }
     public void playerHit()
     {
-        
+        score.addScore(5);
     }
-    public void tie(){
     
+    public void playerGotHit()
+    {
+        life.takeLife();
+        
+        if (life.isDead())
+        {
+            prepareGameOver();
+        }
     }
     
     public void act()
@@ -175,7 +184,7 @@ public class MyWorld extends World
     public void createTempoUnit(int tempo){
         if (tempoUnitsCount == 0)
         {   
-            TempoUnit unit = new TempoUnit(this.getWidth());
+            Dagger unit = new Dagger(this.getWidth());
             this.addObject(unit,this.getWidth(),4*getHeight()/7);
 
                      

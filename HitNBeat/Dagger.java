@@ -10,7 +10,7 @@ public class Dagger extends TempoUnit
 {
     
     public Dagger(int startLocation){
-        super(startLocation);
+        this.startLocation = startLocation;
     }
     /**
      * Act - do whatever the LeftTempoUnit wants to do. This method is called whenever

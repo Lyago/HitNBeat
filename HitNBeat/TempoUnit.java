@@ -6,16 +6,11 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class TempoUnit extends Actor
+public abstract class TempoUnit extends Actor
 {
     //travel speed of TempoUnits, 5 sets the unit to take 60 frames to get in center
     protected int speed = 7;
-    private int startLocation;
-    public TempoUnit(int startLocation)
-    {
-        startLocation = startLocation;
-        
-    }
+    protected int startLocation;
     /**
      * Act - do whatever the TempoUnit wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.

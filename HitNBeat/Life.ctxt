@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.target=Life
+comment0.text=\n\ Write\ a\ description\ of\ class\ Life\ here.\n\ \n\ @author\ (your\ name)\ \n\ @version\ (a\ version\ number\ or\ a\ date)\n
+comment1.params=
+comment1.target=Life()
+comment2.params=
+comment2.target=void\ takeLife()
+comment3.params=
+comment3.target=void\ updateImage()
+comment4.params=
+comment4.target=boolean\ isDead()
+numComments=5
