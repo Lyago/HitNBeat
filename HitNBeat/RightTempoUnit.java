@@ -20,9 +20,8 @@ public class RightTempoUnit extends TempoUnit
        createTempoUnit();
     } 
     public void createTempoUnit(){
-        Actor metronome;
-        metronome = getObjectsInRange(500, Metronome.class).get(0);
-        if(this.getX() <= metronome.getX()){
+        adventurer adventurer = getObjectsInRange(500, adventurer.class).get(0);
+        if(this.getX() <= adventurer.getX()){
             World world = this.getWorld();
             world.removeObject(this);
         }else{

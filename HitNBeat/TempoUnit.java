@@ -27,7 +27,7 @@ public abstract class TempoUnit extends Actor
     }
     public boolean isActionTime()
     {
-        if(this.isTouching(TempoUnit.class)){
+        if(this.isTouching(Metronome.class)){
             return true;
 
         }

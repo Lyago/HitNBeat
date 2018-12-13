@@ -17,11 +17,14 @@ public class MyWorld extends World
     private int tempoUnitsCount = 0;
     private GreenfootSound backgroundMusic;
     
-    // Controlling actors
     
+    // Controlling actors
+    private adventurer p1;
+    private Score score;
     // Game state
     private enum GameState{MENU,PLAYING,GAMEOVER};    
     private GameState state;
+    
     /**
      * Constructor for objects of class MyWorld.
      * 
@@ -46,19 +49,19 @@ public class MyWorld extends World
     private void prepare()
     {
         Metronome metronome = new Metronome();
-        addObject(metronome,this.getWidth()/2,360);
-        TempoUnit tempoUnit = new RightTempoUnit(this.getWidth());
-        addObject(tempoUnit,this.getWidth(),360);
-        TempoUnit tempoUnit2 = new LeftTempoUnit(0);
-        addObject(tempoUnit2,0,360);
-        Player player = new Player();
-        addObject(player,this.getWidth()/3,this.getHeight()/2);
-        Player player2 = new Player();
-        addObject(player2,2*this.getWidth()/3,this.getHeight()/2);
+        addObject(metronome,getWidth()/3,4*getHeight()/7);
+        TempoUnit tempoUnit = new RightTempoUnit(getWidth());
+        addObject(tempoUnit,getWidth(),4*getHeight()/7);
+        p1 = new adventurer("left","up","right", 6);
+        addObject(p1,getWidth()/6,getHeight()/2);
+        score= new Score();
+        addObject(score,getWidth()/2,15);
+        
         
         // Set the game state
         state = GameState.PLAYING;
         Greenfoot.start();
+        setTempo(123);
         backgroundMusic = new GreenfootSound("18 - Knight to C-Sharp (Deep Blues).mp3");
         backgroundMusic.setVolume(30);
         backgroundMusic.play();
@@ -89,10 +92,8 @@ public class MyWorld extends World
         if (tempoUnitsCount == 0)
         {   
             TempoUnit rightUnit = new RightTempoUnit(this.getWidth());
-            TempoUnit leftUnit = new LeftTempoUnit(0);
-            int y = 360;
-            this.addObject(rightUnit,this.getWidth(),y);
-            this.addObject(leftUnit,0,y);
+            this.addObject(rightUnit,this.getWidth(),4*getHeight()/7);
+
                      
         }
         
@@ -106,7 +107,9 @@ public class MyWorld extends World
     {
         
     }
+    public void tie(){
     
+    }
     public boolean checkOffBeatInput()
     {
        if(Greenfoot.isKeyDown("left") || Greenfoot.isKeyDown("right")){
@@ -151,11 +154,17 @@ public class MyWorld extends World
     
     public void actPlaying()
     {
-        createTempoUnit(123);
+        createTempoUnit(tempo);
+        
         if(Greenfoot.isKeyDown("escape")){
             Greenfoot.stop();
             backgroundMusic.stop();
         }
+        
+        if(isActionTime()){
+            
+        }
+      
         frame++;
     }
         
