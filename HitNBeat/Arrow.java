@@ -6,9 +6,9 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class RightTempoUnit extends TempoUnit
+public class Arrow extends TempoUnit
 {
-    public RightTempoUnit(int startLocation){
+    public Arrow(int startLocation){
         super(startLocation);
     }
     /**
@@ -17,9 +17,9 @@ public class RightTempoUnit extends TempoUnit
      */
     public void act() 
     {
-       createTempoUnit();
+       createArrow();
     } 
-    public void createTempoUnit(){
+    public void createArrow(){
         adventurer adventurer = getObjectsInRange(500, adventurer.class).get(0);
         if(this.getX() <= adventurer.getX()){
             World world = this.getWorld();

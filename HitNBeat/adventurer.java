@@ -8,9 +8,9 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class adventurer extends AnimatedActor
 {
-    private PlayerStates state = PlayerStates.IDLE;
     private int penaltyFrames = 30;
     private int frameCounter = 0;
+    private int bufferInputCoolDown = 24;
     private String quickAttack;
     private String strongAttack;
     private String riposte;
@@ -23,29 +23,6 @@ public class adventurer extends AnimatedActor
         this.riposte = riposte;
         
 
-    }
-    public int getState(){
-        switch(state)
-        { 
-            case IDLE:
-            {                  
-                return 0;   
-            }  
-            case FLINCHING:
-            {                  
-                return 1;
-            }            
-            case STRONGATTACKING:
-            {                  
-                return 2;
-            }            
-            case QUICKATTACKING:
-            {                  
-                return 3;
-            }            
-
-        }
-        return 4; //RIPOSTING
     }
     public boolean isActing(){
         if(this.state == PlayerStates.IDLE || 
@@ -63,84 +40,80 @@ public class adventurer extends AnimatedActor
      */
     public void act() 
     {
+        MyWorld world = (MyWorld)this.getWorld();
+        //calls animation, default: Idle
         super.act();
+        //setup states, which will determine which animation will be run
         switch(state)
         { 
             case IDLE:
             {                  
+                if (world.isActionTime()){
+                    if (Greenfoot.isKeyDown(this.quickAttack)){
+                        this.state = PlayerStates.QUICKATTACKING;
+                        //System.out.println("qa");
+                        
+                    }    
+                    else if (Greenfoot.isKeyDown(this.strongAttack)){
+                        this.state = PlayerStates.STRONGATTACKING;
+                    }  
+                    else if (Greenfoot.isKeyDown(this.riposte)){
+                        this.state = PlayerStates.RIPOSTING;
+                    }  
+                }else{ 
+                   if(world.checkOffBeatInput()){
+                       this.state = PlayerStates.FLINCHING;
+                   }
+                }
+        
                 actIdle();   
                 break;
             }  
             case QUICKATTACKING:
             {                  
+                
+                if(this.isTouching(TempoUnit.class)){
+                    TempoUnit unit = (TempoUnit)this.getOneIntersectingObject(TempoUnit.class);
+                    world.removeObject(unit);
+                }
                 actQuickAttack();   
                 break;
             }            
             case STRONGATTACKING:
             {                  
+               
+                if(this.isTouching(TempoUnit.class)){
+                    TempoUnit unit = (TempoUnit)this.getOneIntersectingObject(TempoUnit.class);
+                    world.removeObject(unit);
+                }
                 actStrongAttack();   
                 break;
             }            
             case RIPOSTING:
             {                  
+              
+                if(this.isTouching(TempoUnit.class)){
+                    TempoUnit unit = (TempoUnit)this.getOneIntersectingObject(TempoUnit.class);
+                    world.removeObject(unit);
+                }
                 actRiposte();   
                 break;
             }            
             case FLINCHING:
             {
+                // 15 frames no-input penalty for offbeat input
+                this.penaltyFrames--;
+                if(penaltyFrames == 0){
+                    this.state = PlayerStates.IDLE;
+                    this.resetPenaltyFrames();
+                }
                 actPenalized();
                 break;
             }
         }
-    }
-    public void actIdle(){
-        MyWorld world = (MyWorld)this.getWorld();
-     
-        
-        if (world.isActionTime()){
-            if (Greenfoot.isKeyDown(this.quickAttack)){
-                this.state = PlayerStates.QUICKATTACKING;
-                
-            }    
-            if (Greenfoot.isKeyDown(this.strongAttack)){
-                this.state = PlayerStates.STRONGATTACKING;
-            }  
-            if (Greenfoot.isKeyDown(this.riposte)){
-                this.state = PlayerStates.RIPOSTING;
-            }  
-        }else{ 
-           if(world.checkOffBeatInput()){
-               this.state = PlayerStates.FLINCHING;
-           }
-        }
-        
-      
-    }
-    public void actPenalized(){
-        // 15 frames no-input penalty for offbeat input
-        this.penaltyFrames--;
-        if(penaltyFrames == 0){
+        if(frameCounter++ < bufferInputCoolDown){
             this.state = PlayerStates.IDLE;
-            this.resetPenaltyFrames();
+            frameCounter = 0;
         }
-    }
-    public void actQuickAttack(){
-        MyWorld world = (MyWorld)this.getWorld();
-        if(this.isTouching(TempoUnit.class)){
-            TempoUnit unit = (TempoUnit)this.getOneIntersectingObject(TempoUnit.class);
-            world.removeObject(unit);
-        }
-        
-        
-    }
-    public void actStrongAttack(){
-      
-        
-        
-    }
-    public void actRiposte(){
-        
-        
-        
     }
 }

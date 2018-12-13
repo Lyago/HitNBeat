@@ -6,10 +6,10 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class LeftTempoUnit extends TempoUnit
+public class Dagger extends TempoUnit
 {
     
-    public LeftTempoUnit(int startLocation){
+    public Dagger(int startLocation){
         super(startLocation);
     }
     /**
@@ -18,9 +18,9 @@ public class LeftTempoUnit extends TempoUnit
      */
     public void act() 
     {
-       createTempoUnit();
+       createDagger();
     }
-    public void createTempoUnit(){
+    public void createDagger(){
         Actor metronome;
         metronome = getObjectsInRange(500, Metronome.class).get(0);
         if(this.getX() >= metronome.getX()){

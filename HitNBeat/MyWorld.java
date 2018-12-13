@@ -21,6 +21,9 @@ public class MyWorld extends World
     // Controlling actors
     private adventurer p1;
     private Score score;
+    private MenuButton button;
+    private GameOver gameOver;
+    private FinalScore finalScore;
     // Game state
     private enum GameState{MENU,PLAYING,GAMEOVER};    
     private GameState state;
@@ -34,25 +37,31 @@ public class MyWorld extends World
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
         super(600, 400, 1);
         Greenfoot.setSpeed(50);
-        prepare();
+        // Set the initial world state to MENU
+        prepareMenu();  
     }
-    public void setTempo(int tempo){
-        this.tempo = tempo;
+    
+    private void prepareMenu(){
+        // Clear the world
+        removeObjects(getObjects(Actor.class));
+                
+        // Create the menu
+        button = new MenuButton();        
+        addObject(new MenuBackground(),getWidth()/2,getHeight()/2);
+        addObject(button,getWidth()-60,getHeight()-60);
+        
+        // Set the game state
+        state = GameState.MENU;
     }
-    public void resetMetronome(){
-        this.frame = 1;
-    }
-    /**
-     * Prepare the world for the start of the program.
-     * That is: create the initial objects and add them to the world.
-     */
-    private void prepare()
-    {
+    private void preparePlaying(){
+        // Clear the world
+        removeObjects(getObjects(Actor.class));
+        
         Metronome metronome = new Metronome();
         addObject(metronome,getWidth()/3,4*getHeight()/7);
-        TempoUnit tempoUnit = new RightTempoUnit(getWidth());
+        TempoUnit tempoUnit = new TempoUnit(getWidth());
         addObject(tempoUnit,getWidth(),4*getHeight()/7);
-        p1 = new adventurer("left","up","right", 6);
+        p1 = new adventurer("right","up","left", 6);
         addObject(p1,getWidth()/6,getHeight()/2);
         score= new Score();
         addObject(score,getWidth()/2,15);
@@ -65,6 +74,28 @@ public class MyWorld extends World
         backgroundMusic = new GreenfootSound("18 - Knight to C-Sharp (Deep Blues).mp3");
         backgroundMusic.setVolume(30);
         backgroundMusic.play();
+    }
+    private void prepareGameOver(){
+        // Clear the world
+        removeObjects(getObjects(Actor.class)); 
+      
+        // Add gameover screen
+        gameOver = new GameOver();
+        addObject(gameOver,getWidth()/2,getHeight()/2);
+        
+        // Add the final score
+        int fscore = score.getScore();
+        finalScore = new FinalScore(fscore);
+        addObject(finalScore,getWidth()-75,60);
+                                
+        // Set the game state
+        state = GameState.GAMEOVER;           
+    }
+    public void setTempo(int tempo){
+        this.tempo = tempo;
+    }
+    public void resetMetronome(){
+        this.frame = 1;
     }
     // ========================================================================== //
     // Game events                                                                //
@@ -88,21 +119,6 @@ public class MyWorld extends World
         
         return false;
     }
-    public void createTempoUnit(int tempo){
-        if (tempoUnitsCount == 0)
-        {   
-            TempoUnit rightUnit = new RightTempoUnit(this.getWidth());
-            this.addObject(rightUnit,this.getWidth(),4*getHeight()/7);
-
-                     
-        }
-        
-        // Synchronizes spawn time off TempoUnits with tempo (60frames x 60sec/bpm)
-        if (tempoUnitsCount++ == 3600/tempo)
-        {
-            tempoUnitsCount=0   ;
-        }   
-    }
     public void playerHit()
     {
         
@@ -110,18 +126,7 @@ public class MyWorld extends World
     public void tie(){
     
     }
-    public boolean checkOffBeatInput()
-    {
-       if(Greenfoot.isKeyDown("left") || Greenfoot.isKeyDown("right")){
-           //TODO: file is playing multiple times when a offbeat input happens
-
-               Greenfoot.playSound("sfx_missedbeat_01.mp3");
-               
-
-           return true;
-       }
-       return false;
-    }
+    
     public void act()
     {
         switch(state)
@@ -146,9 +151,9 @@ public class MyWorld extends World
     }
     public void actMenu()
     {
-        if(true)
+        if(Greenfoot.mouseClicked(button))
         {
-            
+            preparePlaying();
         }
     }
     
@@ -167,13 +172,41 @@ public class MyWorld extends World
       
         frame++;
     }
+    public void createTempoUnit(int tempo){
+        if (tempoUnitsCount == 0)
+        {   
+            TempoUnit unit = new TempoUnit(this.getWidth());
+            this.addObject(unit,this.getWidth(),4*getHeight()/7);
+
+                     
+        }
         
+        // Synchronizes spawn time off TempoUnits with tempo (60frames x 60sec/bpm)
+        if (tempoUnitsCount++ == 3600/tempo)
+        {
+            tempoUnitsCount=0   ;
+        }   
+    }
+    
     public void actGameOver()
     {
-        if(true)
+        if(Greenfoot.mouseClicked(gameOver) ||
+           Greenfoot.mouseClicked(finalScore))
         {
-            
+            prepareMenu();
         }
+    }
+    public boolean checkOffBeatInput()
+    {
+       if(Greenfoot.isKeyDown("left") || Greenfoot.isKeyDown("right") || Greenfoot.isKeyDown("up") ){
+           //TODO: file is playing multiple times when a offbeat input happens
+
+               Greenfoot.playSound("sfx_missedbeat_01.mp3");
+               
+
+           return true;
+       }
+       return false;
     }
 }
 

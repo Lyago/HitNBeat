@@ -6,10 +6,10 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public abstract class TempoUnit extends Actor
+public class TempoUnit extends Actor
 {
     //travel speed of TempoUnits, 5 sets the unit to take 60 frames to get in center
-    protected int speed = 5;
+    protected int speed = 7;
     private int startLocation;
     public TempoUnit(int startLocation)
     {
@@ -22,8 +22,16 @@ public abstract class TempoUnit extends Actor
      */
     public void act() 
     {
-
-        
+       createTempoUnit();
+    } 
+    public void createTempoUnit(){
+        adventurer adventurer = getObjectsInRange(500, adventurer.class).get(0);
+        if(this.getX() <= adventurer.getX()){
+            World world = this.getWorld();
+            world.removeObject(this);
+        }else{
+            move(-speed);
+        }
     }
     public boolean isActionTime()
     {
@@ -33,5 +41,4 @@ public abstract class TempoUnit extends Actor
         }
         return false;
     }
-    public abstract void createTempoUnit();
 }
