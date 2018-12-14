@@ -293,7 +293,7 @@ public class MyWorld extends World
             }else{
                 unit = new Handaxe(this.getWidth());
                 GreenfootImage axe = new GreenfootImage("axe.png");
-                axe.scale(axe.getWidth() - 100, axe.getHeight() - 100);
+                axe.scale(axe.getWidth() - 140, axe.getHeight() - 140);
                 unit.setImage(axe);
             }
 
