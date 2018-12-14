@@ -46,11 +46,22 @@ public class MyWorld extends World
     private void prepareMenu(){
         // Clear the world
         removeObjects(getObjects(Actor.class));
-                
-        // Create the menu
+        // background
+        PlayingBackground background = new PlayingBackground();
+        GreenfootImage bgImage = new GreenfootImage("menu_background.png");
+        bgImage.scale(bgImage.getWidth()+100, bgImage.getHeight()+100 );
+        background.setImage(bgImage);
+        addObject(background,1*getWidth()/8,getHeight()/2); 
+        MenuAdventurer adventurer = new MenuAdventurer();
+        GreenfootImage adventurerImage = new GreenfootImage("adventurer-die-04.png");
+        adventurerImage.scale(adventurerImage.getWidth()+30, adventurerImage.getHeight()+30 );
+        adventurer.setImage(adventurerImage);
+        addObject(adventurer,2*getWidth()/8+10,getHeight()/2-20);
+        // Create the menu button
         button = new MenuButton();        
-        addObject(new MenuBackground(),getWidth()/2,getHeight()/2);
         addObject(button,getWidth()-60,getHeight()-60);
+        
+        
         
         // Set the game state
         state = GameState.MENU;
@@ -58,6 +69,13 @@ public class MyWorld extends World
     private void preparePlaying(){
         // Clear the world
         removeObjects(getObjects(Actor.class));
+        
+        // background
+        PlayingBackground background = new PlayingBackground();
+        GreenfootImage bgImage = new GreenfootImage("playing_background.png");
+        bgImage.scale(bgImage.getWidth() + 800, bgImage.getHeight() +800);
+        background.setImage(bgImage);
+        addObject(background,3*getWidth()/4,2*getHeight()/3);
         
         Metronome metronome = new Metronome();
         addObject(metronome,getWidth()/3,4*getHeight()/7);
