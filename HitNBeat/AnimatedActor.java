@@ -21,7 +21,7 @@ public class AnimatedActor extends Actor
     private int frameCounter = 0;
     private int animationFrameCounter = 0;
     //number of frames that a single sprite will be on screen on animations
-    private int frameDelay = 4;
+    private int frameDelay = 1;
 
     public AnimatedActor(int frames)
     {
@@ -83,7 +83,7 @@ public class AnimatedActor extends Actor
      */
     public void act() 
     {  
-        if(animationFrameCounter++ <= 30){
+        if(animationFrameCounter++ <= 6){
             if (spriteCount >= sprites.length)
             {
                 spriteCount = 0;
@@ -95,35 +95,38 @@ public class AnimatedActor extends Actor
                 this.setImage(sprites[spriteCount++]);
                 frameCounter = 0;
             }  
-        }
-         
-  
+        }  
     }
 
     public void actIdle(){
         sprites = sprites_idle;
         animationFrameCounter = 0;
+        frameDelay = 4;
 
     }
 
     public void actPenalized(){
         sprites = sprites_flinch;    
-        animationFrameCounter = 0;       
+        animationFrameCounter = 0;   
+        frameDelay = 1;
     }
 
     public void actQuickAttack(){
         sprites = sprites_quick_attack;
         animationFrameCounter = 0;
+        frameDelay = 1;
 
     }
 
     public void actStrongAttack(){
         sprites = sprites_strong_attack;
-        animationFrameCounter = 0;     
+        animationFrameCounter = 0;
+        frameDelay = 1;
     }
 
     public void actRiposte(){
         sprites = sprites_ripose;
         animationFrameCounter = 0;
+        frameDelay = 1;
     }
 }
