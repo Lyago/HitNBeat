@@ -10,7 +10,7 @@ public class adventurer extends AnimatedActor
 {
     private int penaltyFrames = 30;
     private int frameCounter = 0;
-    private int bufferInputCoolDown = 24;
+    private int actionLenght = 8;//Duration of a action in frames
     private String quickAttack;
     private String strongAttack;
     private String riposte;
@@ -43,16 +43,17 @@ public class adventurer extends AnimatedActor
         MyWorld world = (MyWorld)this.getWorld();
         //calls animation, default: Idle
         super.act();
-        //setup states, which will determine which animation will be run
+        
+        //setup states, which will determine which animation will be run in super.act()
         switch(state)
         { 
             case IDLE:
-            {                  
+            {    
+                actIdle(); 
                 if (world.isActionTime()){
                     if (Greenfoot.isKeyDown(this.quickAttack)){
                         this.state = PlayerStates.QUICKATTACKING;
-                        //System.out.println("qa");
-                        
+
                     }    
                     else if (Greenfoot.isKeyDown(this.strongAttack)){
                         this.state = PlayerStates.STRONGATTACKING;
@@ -66,54 +67,63 @@ public class adventurer extends AnimatedActor
                    }
                 }
         
-                actIdle();   
                 break;
             }  
             case QUICKATTACKING:
             {                  
-                
+                actQuickAttack();
                 if(this.isTouching(TempoUnit.class)){
                     TempoUnit unit = (TempoUnit)this.getOneIntersectingObject(TempoUnit.class);
                     world.removeObject(unit);
                 }
-                actQuickAttack();   
+                if(frameCounter++ > actionLenght){
+                    this.state = PlayerStates.IDLE;
+                    frameCounter = 0;
+                }
+                   
                 break;
             }            
             case STRONGATTACKING:
             {                  
-               
+                actStrongAttack();
                 if(this.isTouching(TempoUnit.class)){
                     TempoUnit unit = (TempoUnit)this.getOneIntersectingObject(TempoUnit.class);
                     world.removeObject(unit);
                 }
-                actStrongAttack();   
+                if(frameCounter++ > actionLenght){
+                    this.state = PlayerStates.IDLE;
+                    frameCounter = 0;
+                }
+                   
                 break;
             }            
             case RIPOSTING:
             {                  
-              
+                actRiposte();
                 if(this.isTouching(TempoUnit.class)){
                     TempoUnit unit = (TempoUnit)this.getOneIntersectingObject(TempoUnit.class);
                     world.removeObject(unit);
                 }
-                actRiposte();   
+                if(frameCounter++ > actionLenght){
+                    this.state = PlayerStates.IDLE;
+                    frameCounter = 0;
+                }
+                   
                 break;
             }            
             case FLINCHING:
             {
+                actPenalized();
                 // 15 frames no-input penalty for offbeat input
                 this.penaltyFrames--;
                 if(penaltyFrames == 0){
                     this.state = PlayerStates.IDLE;
                     this.resetPenaltyFrames();
                 }
-                actPenalized();
+                
                 break;
             }
         }
-        if(frameCounter++ < bufferInputCoolDown){
-            this.state = PlayerStates.IDLE;
-            frameCounter = 0;
-        }
+       
     }
 }

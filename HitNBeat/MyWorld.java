@@ -123,10 +123,6 @@ public class MyWorld extends World
     {
         
     }
-    public void tie(){
-    
-    }
-    
     public void act()
     {
         switch(state)
