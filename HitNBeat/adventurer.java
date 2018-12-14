@@ -8,9 +8,9 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Adventurer extends AnimatedActor
 {
-    private int penaltyFrames = 30;//input timeout penalty for missbeatinput
+    private int penaltyFrames = 15;//input timeout penalty for missbeatinput
     private int frameCounter = 0;
-    private int actionLenght = 8;//Duration of a action in frames
+    private int actionLenght = 6;//Duration of a action in frames
     private String quickAttack;
     private String strongAttack;
     private String riposte;
@@ -53,16 +53,19 @@ public class Adventurer extends AnimatedActor
                 if (world.isActionTime()){
                     if (Greenfoot.isKeyDown(this.quickAttack)){
                         this.state = PlayerStates.QUICKATTACKING;
-
+                        frameCounter = 0;
                     }
                     else if (Greenfoot.isKeyDown(this.strongAttack)){
                         this.state = PlayerStates.STRONGATTACKING;
+                        frameCounter = 0;
                     }
                     else if (Greenfoot.isKeyDown(this.riposte)){
                         this.state = PlayerStates.RIPOSTING;
+                        frameCounter = 0;
                     }
                 }else if(world.checkOffBeatInput()){
                     this.state = PlayerStates.FLINCHING;
+                    frameCounter = 0;
 
                 }
                 if(this.isTouching(TempoUnit.class)){
@@ -71,6 +74,7 @@ public class Adventurer extends AnimatedActor
                         world.removeObject(unit);
                         world.playerGotHit();
                         this.state = PlayerStates.FLINCHING;
+                        frameCounter = 0;
                     }
 
                 }
@@ -124,6 +128,7 @@ public class Adventurer extends AnimatedActor
             }
             case FLINCHING:
             {
+                
                 actPenalized();
                 if(this.isTouching(TempoUnit.class)){
                     TempoUnit unit = (TempoUnit)this.getOneIntersectingObject(TempoUnit.class);
@@ -131,9 +136,10 @@ public class Adventurer extends AnimatedActor
                         world.removeObject(unit);
                         world.playerGotHit();
                         this.state = PlayerStates.FLINCHING;
+                        
                     }
                 }
-                if(frameCounter++ > actionLenght * 2){
+                if(frameCounter++ > penaltyFrames){
                     this.state = PlayerStates.IDLE;
                     frameCounter = 0;
                 }

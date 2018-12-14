@@ -19,7 +19,7 @@ public class Score extends Actor
     {
         if (count == 0)
         {
-            GreenfootImage image = new GreenfootImage("Score: "+points,          
+            GreenfootImage image = new GreenfootImage("Hits: "+points,          
                                     30,
                                    new Color(0,0,0,200),
                                    new Color(255,255,255,0)); 
@@ -38,6 +38,7 @@ public class Score extends Actor
     {
         points += newPoints;
     }
+    
     
     public int getScore()
     {

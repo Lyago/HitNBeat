@@ -9,10 +9,9 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class MyWorld extends World
 {
     private int tempo; //in bpm
+    private int countBeat = 0;
     private int frame = 0;
-    private long lastTouchingFrame = 0;
-    private int actionFrameWindow = 15;
-    private int missinputFrame = 0;
+    private int actionFrameWindow = 15;//frame window that a input is considered on-beat
     // Controlls the beat
     private int tempoUnitsCount = 0;
     private GreenfootSound backgroundMusic;
@@ -20,14 +19,12 @@ public class MyWorld extends World
 
     // Controlling actors
     private Adventurer p1;
-    private Life       life;
     private Score      score;
     private MenuButton button;
-    private GameOver   gameOver;
-    private Completed   completed;
+    private Completed  completed;
     private FinalScore finalScore;
     // Game state
-    private enum GameState{MENU,PLAYING,GAMEOVER, COMPLETED};
+    private enum GameState{MENU,PLAYING,COMPLETED};
     private GameState state;
 
     /**
@@ -46,17 +43,20 @@ public class MyWorld extends World
     private void prepareMenu(){
         // Clear the world
         removeObjects(getObjects(Actor.class));
+        
         // background
         PlayingBackground background = new PlayingBackground();
         GreenfootImage bgImage = new GreenfootImage("menu_background.png");
         bgImage.scale(bgImage.getWidth()+100, bgImage.getHeight()+100 );
         background.setImage(bgImage);
         addObject(background,1*getWidth()/8,getHeight()/2);
+        //adventurer sprite on background
         MenuAdventurer adventurer = new MenuAdventurer();
         GreenfootImage adventurerImage = new GreenfootImage("Adventurer-die-04.png");
         adventurerImage.scale(adventurerImage.getWidth()+30, adventurerImage.getHeight()+30 );
         adventurer.setImage(adventurerImage);
         addObject(adventurer,2*getWidth()/8+10,getHeight()/2-20);
+        
         // Create the menu button
         button = new MenuButton();
         addObject(button,getWidth()-60,getHeight()-60);
@@ -78,13 +78,12 @@ public class MyWorld extends World
         addObject(background,3*getWidth()/4,2*getHeight()/3);
 
         Metronome metronome = new Metronome();
-        addObject(metronome,getWidth()/3,4*getHeight()/7);
+        addObject(metronome,getWidth()/4+55,4*getHeight()/7);
         p1 = new Adventurer("right","up","left", 4);
-        addObject(p1,getWidth()/6,getHeight()/2);
+        addObject(p1,getWidth()/8+55,getHeight()/2);
         score= new Score();
-        life = new Life();
+        finalScore= new FinalScore(0);
         addObject(score,getWidth()/2,15);
-        addObject(life,getWidth()/10,15);
 
 
         // Set the game state
@@ -92,28 +91,9 @@ public class MyWorld extends World
         Greenfoot.start();
         setTempo(100);
         //backgroundMusic = new GreenfootSound("18 - Knight to C-Sharp (Deep Blues).mp3");
-        backgroundMusic = new GreenfootSound("01 - Tombtorial (Tutorial).mp3");
+        backgroundMusic = new GreenfootSound("playing_song(Tombtutorial).mp3");
         backgroundMusic.setVolume(30);
         backgroundMusic.play();
-    }
-    private void prepareGameOver(){
-        // Clear the world
-        removeObjects(getObjects(Actor.class));
-
-        //Stop music
-        backgroundMusic.stop();
-
-        // Add gameover screen
-        gameOver = new GameOver();
-        addObject(gameOver,getWidth()/2,getHeight()/2);
-
-        // Add the final score
-        int fscore = score.getScore();
-        finalScore = new FinalScore(fscore);
-        addObject(finalScore,getWidth()/2,getHeight()/2);
-
-        // Set the game state
-        state = GameState.GAMEOVER;
     }
     private void prepareCompleted(){
         // Clear the world
@@ -132,7 +112,7 @@ public class MyWorld extends World
         addObject(finalScore,getWidth()/2,getHeight()/2);
 
         // Set the game state
-        state = GameState.GAMEOVER;
+        state = GameState.COMPLETED;
     }
     public void setTempo(int tempo){
         this.tempo = tempo;
@@ -162,17 +142,13 @@ public class MyWorld extends World
     }
     public void playerHit()
     {
-        score.addScore(5);
+        score.addScore(1);
+        finalScore.addMaxScore(1);
     }
 
     public void playerGotHit()
     {
-        life.takeLife();
-
-        if (life.isDead())
-        {
-            prepareGameOver();
-        }
+        finalScore.addMaxScore(1);
     }
 
     public void act()
@@ -188,11 +164,6 @@ public class MyWorld extends World
             {
 
                 actPlaying();
-                break;
-            }
-            case GAMEOVER:
-            {
-                actGameOver();
                 break;
             }
             case COMPLETED:
@@ -212,17 +183,98 @@ public class MyWorld extends World
 
     public void actPlaying()
     {
-        createTempoUnit(tempo, Greenfoot.getRandomNumber(3));
-
-        if(Greenfoot.isKeyDown("escape")){
-            Greenfoot.stop();
-            backgroundMusic.stop();
+        if(countBeat < 12){
+            if(countBeat%2 == 0){
+                createTempoUnit(tempo, 0);
+                
+            }else{
+                createTempoUnit(tempo, 2);
+            }
+        }else if(countBeat < 17){
+            if(countBeat%2 == 0){
+                createTempoUnit(tempo*2, 2);
+                
+            }else{
+                createTempoUnit(tempo*2, 1);
+            }
+        }else if(countBeat < 65){
+            if(countBeat%2 == 0){
+                createTempoUnit(tempo, 0);
+                
+            }else{
+                createTempoUnit(tempo, 2);
+            }
+        }else if(countBeat < 80){
+            createTempoUnit(tempo, 0);
+        }else if(countBeat < 96){
+            if(countBeat%2 == 0){
+                createTempoUnit(tempo, 0);
+                
+            }else{
+                createTempoUnit(tempo, 1);
+            }
+        }else if(countBeat < 111){
+            if(countBeat%2 == 0){
+                createTempoUnit(tempo, 0);
+                
+            }else{
+                createTempoUnit(tempo, 2);
+            }
+        }else if(countBeat < 115){
+            if(countBeat%2 == 0){
+                createTempoUnit(tempo*2, 2);
+                
+            }else{
+                createTempoUnit(tempo*2, 1);
+            }
+        }else if(countBeat < 129){
+            if(countBeat%2 == 0){
+                createTempoUnit(tempo, 0);
+                
+            }else{
+                createTempoUnit(tempo, 2);
+            }
+        }else if(countBeat < 133){
+            if(countBeat%2 == 0){
+                createTempoUnit(tempo*2, 2);
+                
+            }else{
+                createTempoUnit(tempo*2, 1);
+            }
+        }else if(countBeat < 146){
+            if(countBeat%2 == 0){
+                createTempoUnit(tempo, 0);
+                
+            }else{
+                createTempoUnit(tempo, 2);
+            }
+        }else if(countBeat < 151){
+            if(countBeat%2 == 0){
+                createTempoUnit(tempo*2, 2);
+                
+            }else{
+                createTempoUnit(tempo*2, 1);
+            }
+        }else if(countBeat < 152){
+                createTempoUnit(tempo, 2);
+        }else if(countBeat < 155){
+            if(countBeat%2 == 0){
+                createTempoUnit(tempo*2, 2);
+                
+            }else{
+                createTempoUnit(tempo*2, 1);
+            }
+        }else{
+            if(countBeat%2 == 0){
+                createTempoUnit(tempo, 0);
+                
+            }else{
+                createTempoUnit(tempo, 2);
+            }
         }
-
         if(!backgroundMusic.isPlaying()){
             prepareCompleted();
         }
-
     }
     public void createTempoUnit(int tempo, int classe){
         if (tempoUnitsCount == 0)
@@ -247,6 +299,8 @@ public class MyWorld extends World
 
 
             this.addObject(unit,this.getWidth(),4*getHeight()/7);
+            countBeat++;
+            
 
 
         }
@@ -257,18 +311,9 @@ public class MyWorld extends World
             tempoUnitsCount=0   ;
         }
     }
-
-    public void actGameOver()
-    {
-        if(Greenfoot.mouseClicked(gameOver) ||
-           Greenfoot.mouseClicked(finalScore))
-        {
-            prepareMenu();
-        }
-    }
     public void actCompleted()
     {
-        if(Greenfoot.mouseClicked(gameOver) ||
+        if(Greenfoot.mouseClicked(completed) ||
            Greenfoot.mouseClicked(finalScore))
         {
             prepareMenu();

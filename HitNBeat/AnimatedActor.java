@@ -20,8 +20,9 @@ public class AnimatedActor extends Actor
 
     private int frameCounter = 0;
     private int animationFrameCounter = 0;
+    private int animationLength = 8;
     //number of frames that a single sprite will be on screen on animations
-    private int frameDelay = 1;
+    private int frameDelay = 4;
 
     public AnimatedActor(int frames)
     {
@@ -83,50 +84,55 @@ public class AnimatedActor extends Actor
      */
     public void act() 
     {  
-        if(animationFrameCounter++ <= 6){
+        if(animationFrameCounter == 0){
+            spriteCount = 0;
+        }
+        frameCounter++;
+        animationFrameCounter++;
+        if(animationFrameCounter >= animationLength){
             if (spriteCount >= sprites.length)
             {
                 spriteCount = 0;
             }
             //delay for repeating sprites in multiple frames, slowing down the animation
-            if(frameCounter++ < frameDelay){
+            if(frameCounter <= frameDelay){
                 this.setImage(sprites[spriteCount]);
             }else{
                 this.setImage(sprites[spriteCount++]);
                 frameCounter = 0;
             }  
-        }  
+        }
     }
 
     public void actIdle(){
         sprites = sprites_idle;
-        animationFrameCounter = 0;
-        frameDelay = 4;
+        animationLength = 8;
+        frameDelay = 6;
 
     }
 
     public void actPenalized(){
-        sprites = sprites_flinch;    
-        animationFrameCounter = 0;   
-        frameDelay = 4;
+        sprites = sprites_flinch; 
+        animationLength = 8;   
+        frameDelay = 3;
     }
 
     public void actQuickAttack(){
         sprites = sprites_quick_attack;
-        animationFrameCounter = 0;
-        frameDelay = 1;
+        frameDelay = 4;
+        spriteCount = 1;
 
     }
 
     public void actStrongAttack(){
         sprites = sprites_strong_attack;
-        animationFrameCounter = 0;
-        frameDelay = 1;
+        frameDelay = 4;
+        spriteCount = 1;
     }
 
     public void actRiposte(){
         sprites = sprites_ripose;
-        animationFrameCounter = 0;
-        frameDelay = 1;
+        frameDelay = 4;
+        spriteCount = 1;
     }
 }
