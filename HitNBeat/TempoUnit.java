@@ -9,7 +9,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public abstract class TempoUnit extends Actor
 {
     //travel speed of TempoUnits, 5 sets the unit to take 60 frames to get in center
-    protected int speed = 7;
+    protected int speed = 5;
     protected int startLocation;
     /**
      * Act - do whatever the TempoUnit wants to do. This method is called whenever

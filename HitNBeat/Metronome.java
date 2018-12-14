@@ -18,7 +18,7 @@ public class Metronome extends Actor
         
     }
     public TempoUnit getNearTempoUnit(){  
-        List<TempoUnit> nearTempoUnits = this.getObjectsInRange(15, TempoUnit.class);
+        List<TempoUnit> nearTempoUnits = this.getObjectsInRange(35, TempoUnit.class);
         if(!nearTempoUnits.isEmpty()){
             return nearTempoUnits.get(0);
         }    

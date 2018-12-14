@@ -108,7 +108,7 @@ public class AnimatedActor extends Actor
     public void actPenalized(){
         sprites = sprites_flinch;    
         animationFrameCounter = 0;   
-        frameDelay = 1;
+        frameDelay = 4;
     }
 
     public void actQuickAttack(){

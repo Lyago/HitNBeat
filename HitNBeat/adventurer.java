@@ -8,7 +8,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class adventurer extends AnimatedActor
 {
-    private int penaltyFrames = 30;
+    private int penaltyFrames = 30;//input timeout penalty for missbeatinput
     private int frameCounter = 0;
     private int actionLenght = 8;//Duration of a action in frames
     private String quickAttack;
@@ -61,10 +61,9 @@ public class adventurer extends AnimatedActor
                     else if (Greenfoot.isKeyDown(this.riposte)){
                         this.state = PlayerStates.RIPOSTING;
                     }  
-                }else{ 
-                   if(world.checkOffBeatInput()){
-                       this.state = PlayerStates.FLINCHING;
-                   }
+                }else if(world.checkOffBeatInput()){
+                    this.state = PlayerStates.FLINCHING;
+                   
                 }
                 if(this.isTouching(TempoUnit.class)){
                     TempoUnit unit = (TempoUnit)this.getOneIntersectingObject(TempoUnit.class);
@@ -134,16 +133,12 @@ public class adventurer extends AnimatedActor
                         this.state = PlayerStates.FLINCHING;
                     }
                 }
-                if(frameCounter++ > actionLenght){
+                if(frameCounter++ > actionLenght * 2){
                     this.state = PlayerStates.IDLE;
                     frameCounter = 0;
                 }
                 // 15 frames no-input penalty for offbeat input
-                this.penaltyFrames--;
-                if(penaltyFrames == 0){
-                    this.state = PlayerStates.IDLE;
-                    this.resetPenaltyFrames();
-                }
+                
                 
                 break;
             }

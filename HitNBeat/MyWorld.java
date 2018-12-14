@@ -11,7 +11,7 @@ public class MyWorld extends World
     private int tempo; //in bpm
     private int frame = 0;
     private long lastTouchingFrame = 0;
-    private int actionFrameWindow = 11;
+    private int actionFrameWindow = 15;
     private int missinputFrame = 0;
     // Controlls the beat
     private int tempoUnitsCount = 0;
@@ -27,7 +27,7 @@ public class MyWorld extends World
     private Completed   completed;
     private FinalScore finalScore;
     // Game state
-    private enum GameState{MENU,PLAYING,GAMEOVER, COMPLETE};    
+    private enum GameState{MENU,PLAYING,GAMEOVER, COMPLETED};    
     private GameState state;
     
     /**
@@ -130,12 +130,12 @@ public class MyWorld extends World
         TempoUnit unit = metronome.getNearTempoUnit();
         if(unit != null){
             if(unit.isActionTime()){
-            frame++;    
-            return true;
+                frame++;    
+                return true;
             }
         //Right now there is a 15 frame window for the input be considered on beat.
         //4 frames of touching tempo units + 11 frames form actionFrameWindow
-        }else if(frame <= actionFrameWindow){
+        }else if(frame + 10 > actionFrameWindow ){
             frame = 0;
             return true;
         }
@@ -177,6 +177,11 @@ public class MyWorld extends World
                 actGameOver();
                 break;
             }
+            case COMPLETED:
+            {
+                actCompleted();
+                break;
+            }
         }
     }
     public void actMenu()
@@ -196,11 +201,10 @@ public class MyWorld extends World
             backgroundMusic.stop();
         }
         
-        if(isActionTime()){
-            
+        if(!backgroundMusic.isPlaying()){
+            prepareCompleted();
         }
       
-        frame++;
     }
     public void createTempoUnit(int tempo, int classe){
         if (tempoUnitsCount == 0)
@@ -237,6 +241,14 @@ public class MyWorld extends World
     }
     
     public void actGameOver()
+    {
+        if(Greenfoot.mouseClicked(gameOver) ||
+           Greenfoot.mouseClicked(finalScore))
+        {
+            prepareMenu();
+        }
+    }
+    public void actCompleted()
     {
         if(Greenfoot.mouseClicked(gameOver) ||
            Greenfoot.mouseClicked(finalScore))
