@@ -1,8 +1,8 @@
 #BlueJ class context
-comment0.target=adventurer
-comment0.text=\r\n\ Write\ a\ description\ of\ class\ Player\ here.\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment0.target=Adventurer
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ Player\ here.\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
 comment1.params=quickAttack\ strongAttack\ riposte\ animationFrames
-comment1.target=adventurer(java.lang.String,\ java.lang.String,\ java.lang.String,\ int)
+comment1.target=Adventurer(java.lang.String,\ java.lang.String,\ java.lang.String,\ int)
 comment2.params=
 comment2.target=boolean\ isActing()
 comment3.params=
