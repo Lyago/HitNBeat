@@ -57,6 +57,8 @@ public class MyWorld extends World
         adventurer.setImage(adventurerImage);
         addObject(adventurer,2*getWidth()/8+10,getHeight()/2-20);
         
+        prepareTurotial();
+        
         // Create the menu button
         button = new MenuButton();
         addObject(button,getWidth()-60,getHeight()-60);
@@ -65,6 +67,55 @@ public class MyWorld extends World
 
         // Set the game state
         state = GameState.MENU;
+    }
+    
+    private void prepareTurotial(){
+        //visual tutorial
+        MenuAdventurer adventurerQA = new MenuAdventurer();
+        GreenfootImage adventurerImage = new GreenfootImage("Adventurer-attack2-01.png");
+        adventurerImage.scale(adventurerImage.getWidth()-10, adventurerImage.getHeight()-10 );
+        adventurerQA.setImage(adventurerImage);
+        addObject(adventurerQA,getWidth()-60,15);
+        
+        Text right = new Text("Right");
+        addObject(right,getWidth()-100,20);
+        
+        MenuAdventurer adventurerSA = new MenuAdventurer();
+        adventurerImage = new GreenfootImage("Adventurer-attack3-01.png");
+        adventurerImage.scale(adventurerImage.getWidth()-10, adventurerImage.getHeight()-10 );
+        adventurerSA.setImage(adventurerImage);
+        addObject(adventurerSA,getWidth()-60,43);
+        
+        Text up = new Text("Up");
+        addObject(up,getWidth()-100,48);
+        
+        
+        MenuAdventurer adventurerRT = new MenuAdventurer();
+        adventurerImage = new GreenfootImage("Adventurer-attack1-01.png");
+        adventurerImage.scale(adventurerImage.getWidth()-10, adventurerImage.getHeight()-10 );
+        adventurerRT.setImage(adventurerImage);
+        addObject(adventurerRT,getWidth()-60,80);
+        
+        Text left = new Text("Left");
+        addObject(left,getWidth()-100,85);
+        
+        MenuAdventurer arrow = new MenuAdventurer();
+        adventurerImage = new GreenfootImage("arrow.png");
+        adventurerImage.scale(adventurerImage.getWidth()-30, adventurerImage.getHeight()-5 );
+        arrow.setImage(adventurerImage);
+        addObject(arrow,getWidth()-30,20);
+        
+        MenuAdventurer axe = new MenuAdventurer();
+        adventurerImage = new GreenfootImage("axe.png");
+        adventurerImage.scale(adventurerImage.getWidth()-180, adventurerImage.getHeight()-180 );
+        axe.setImage(adventurerImage);
+        addObject(axe,getWidth()-30,45);
+        
+        MenuAdventurer dagger = new MenuAdventurer();
+        adventurerImage = new GreenfootImage("dagger.png");
+        adventurerImage.scale(adventurerImage.getWidth()-20, adventurerImage.getHeight()-20 );
+        dagger.setImage(adventurerImage);
+        addObject(dagger,getWidth()-25,80);
     }
     private void preparePlaying(){
         // Clear the world
