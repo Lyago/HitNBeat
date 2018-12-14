@@ -18,16 +18,7 @@ public class Dagger extends TempoUnit
      */
     public void act() 
     {
-       createDagger();
+       move(-speed);
     }
-    public void createDagger(){
-        Actor metronome;
-        metronome = getObjectsInRange(500, Metronome.class).get(0);
-        if(this.getX() >= metronome.getX()){
-            World world = this.getWorld();
-            world.removeObject(this);
-        }else{
-            move(speed);
-        }
-    }
+
 }

@@ -17,17 +17,8 @@ public abstract class TempoUnit extends Actor
      */
     public void act() 
     {
-       createTempoUnit();
+       move(-speed);
     } 
-    public void createTempoUnit(){
-        adventurer adventurer = getObjectsInRange(500, adventurer.class).get(0);
-        if(this.getX() <= adventurer.getX()){
-            World world = this.getWorld();
-            world.removeObject(this);
-        }else{
-            move(-speed);
-        }
-    }
     public boolean isActionTime()
     {
         if(this.isTouching(Metronome.class)){

@@ -17,15 +17,7 @@ public class Arrow extends TempoUnit
      */
     public void act() 
     {
-       createArrow();
+        move(-speed);
     } 
-    public void createArrow(){
-        adventurer adventurer = getObjectsInRange(500, adventurer.class).get(0);
-        if(this.getX() <= adventurer.getX()){
-            World world = this.getWorld();
-            world.removeObject(this);
-        }else{
-            move(-speed);
-        }
-    }
+
 }

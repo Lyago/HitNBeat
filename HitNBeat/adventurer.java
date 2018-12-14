@@ -66,15 +66,25 @@ public class adventurer extends AnimatedActor
                        this.state = PlayerStates.FLINCHING;
                    }
                 }
-        
+                if(this.isTouching(TempoUnit.class)){
+                    TempoUnit unit = (TempoUnit)this.getOneIntersectingObject(TempoUnit.class);
+                    if(unit.getX() <= this.getX()){
+                        world.removeObject(unit);
+                        world.playerGotHit();
+                        this.state = PlayerStates.FLINCHING;
+                    }
+                    
+                }
                 break;
             }  
             case QUICKATTACKING:
             {                  
                 actQuickAttack();
-                if(this.isTouching(TempoUnit.class)){
-                    TempoUnit unit = (TempoUnit)this.getOneIntersectingObject(TempoUnit.class);
+                if(this.isTouching(Arrow.class)){
+                    TempoUnit unit = (Arrow)this.getOneIntersectingObject(Arrow.class);
                     world.removeObject(unit);
+                    world.playerHit();
+ 
                 }
                 if(frameCounter++ > actionLenght){
                     this.state = PlayerStates.IDLE;
@@ -86,9 +96,10 @@ public class adventurer extends AnimatedActor
             case STRONGATTACKING:
             {                  
                 actStrongAttack();
-                if(this.isTouching(TempoUnit.class)){
-                    TempoUnit unit = (TempoUnit)this.getOneIntersectingObject(TempoUnit.class);
+                if(this.isTouching(Handaxe.class)){
+                    TempoUnit unit = (Handaxe)this.getOneIntersectingObject(Handaxe.class);
                     world.removeObject(unit);
+                    world.playerHit();
                 }
                 if(frameCounter++ > actionLenght){
                     this.state = PlayerStates.IDLE;
@@ -100,9 +111,10 @@ public class adventurer extends AnimatedActor
             case RIPOSTING:
             {                  
                 actRiposte();
-                if(this.isTouching(TempoUnit.class)){
-                    TempoUnit unit = (TempoUnit)this.getOneIntersectingObject(TempoUnit.class);
+                if(this.isTouching(Dagger.class)){
+                    TempoUnit unit = (Dagger)this.getOneIntersectingObject(Dagger.class);
                     world.removeObject(unit);
+                    world.playerHit();
                 }
                 if(frameCounter++ > actionLenght){
                     this.state = PlayerStates.IDLE;
@@ -114,6 +126,18 @@ public class adventurer extends AnimatedActor
             case FLINCHING:
             {
                 actPenalized();
+                if(this.isTouching(TempoUnit.class)){
+                    TempoUnit unit = (TempoUnit)this.getOneIntersectingObject(TempoUnit.class);
+                    if(unit.getX() <= this.getX()){
+                        world.removeObject(unit);
+                        world.playerGotHit();
+                        this.state = PlayerStates.FLINCHING;
+                    }
+                }
+                if(frameCounter++ > actionLenght){
+                    this.state = PlayerStates.IDLE;
+                    frameCounter = 0;
+                }
                 // 15 frames no-input penalty for offbeat input
                 this.penaltyFrames--;
                 if(penaltyFrames == 0){

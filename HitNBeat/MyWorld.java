@@ -9,7 +9,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class MyWorld extends World
 {
     private int tempo; //in bpm
-    private long frame = 1;// 1/60 second
+    private int frame = 0;
     private long lastTouchingFrame = 0;
     private int actionFrameWindow = 11;
     private int missinputFrame = 0;
@@ -60,20 +60,20 @@ public class MyWorld extends World
         
         Metronome metronome = new Metronome();
         addObject(metronome,getWidth()/3,4*getHeight()/7);
-        Dagger dagger = new Dagger(getWidth());
-        addObject(dagger,getWidth(),4*getHeight()/7);
         p1 = new adventurer("right","up","left", 6);
         addObject(p1,getWidth()/6,getHeight()/2);
         score= new Score();
         life = new Life();
         addObject(score,getWidth()/2,15);
+        addObject(life,getWidth()/10,15);
         
         
         // Set the game state
         state = GameState.PLAYING;
         Greenfoot.start();
-        setTempo(123);
-        backgroundMusic = new GreenfootSound("18 - Knight to C-Sharp (Deep Blues).mp3");
+        setTempo(100);
+        //backgroundMusic = new GreenfootSound("18 - Knight to C-Sharp (Deep Blues).mp3");
+        backgroundMusic = new GreenfootSound("01 - Tombtorial (Tutorial).mp3");
         backgroundMusic.setVolume(30);
         backgroundMusic.play();
     }
@@ -96,9 +96,6 @@ public class MyWorld extends World
     public void setTempo(int tempo){
         this.tempo = tempo;
     }
-    public void resetMetronome(){
-        this.frame = 1;
-    }
     // ========================================================================== //
     // Game events                                                                //
     // These methods are invoked to proccess main game events.                    //
@@ -110,12 +107,13 @@ public class MyWorld extends World
         TempoUnit unit = metronome.getNearTempoUnit();
         if(unit != null){
             if(unit.isActionTime()){
-            lastTouchingFrame = frame;    
+            frame++;    
             return true;
             }
         //Right now there is a 15 frame window for the input be considered on beat.
         //4 frames of touching tempo units + 11 frames form actionFrameWindow
-        }else if(frame - lastTouchingFrame <= actionFrameWindow){
+        }else if(frame <= actionFrameWindow){
+            frame = 0;
             return true;
         }
         
@@ -189,9 +187,17 @@ public class MyWorld extends World
                 unit = new Arrow(this.getWidth());
                 unit.setImage("arrow.png");
             }
-            else{
+            else if(classe == 1){
                 unit = new Dagger(this.getWidth());
                 unit.setImage("dagger.png");
+                GreenfootImage dagger = new GreenfootImage("dagger.png");
+                dagger.scale(dagger.getWidth() + 20, dagger.getHeight() +20);
+                unit.setImage(dagger);
+            }else{
+                unit = new Handaxe(this.getWidth());
+                GreenfootImage axe = new GreenfootImage("axe.png");
+                axe.scale(axe.getWidth() - 100, axe.getHeight() - 100);
+                unit.setImage(axe);
             }
             
             
