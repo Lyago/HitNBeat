@@ -60,8 +60,8 @@ public class MyWorld extends World
         
         Metronome metronome = new Metronome();
         addObject(metronome,getWidth()/3,4*getHeight()/7);
-        Dagger dagger = new Dagger(getWidth());
-        addObject(dagger,getWidth(),4*getHeight()/7);
+        Dagger arrow = new Dagger(getWidth());
+        addObject(arrow,getWidth(),4*getHeight()/7);
         p1 = new adventurer("right","up","left", 6);
         addObject(p1,getWidth()/6,getHeight()/2);
         score= new Score();
@@ -168,7 +168,7 @@ public class MyWorld extends World
     
     public void actPlaying()
     {
-        createTempoUnit(tempo);
+        createTempoUnit(tempo, Greenfoot.getRandomNumber(2));
         
         if(Greenfoot.isKeyDown("escape")){
             Greenfoot.stop();
@@ -181,10 +181,14 @@ public class MyWorld extends World
       
         frame++;
     }
-    public void createTempoUnit(int tempo){
+    public void createTempoUnit(int tempo, int classe){
         if (tempoUnitsCount == 0)
         {   
-            Dagger unit = new Dagger(this.getWidth());
+            TempoUnit unit;
+            if (classe == 0)
+                unit = new Arrow(this.getWidth());
+            else
+                unit = new Dagger(this.getWidth());
             this.addObject(unit,this.getWidth(),4*getHeight()/7);
 
                      
