@@ -1,7 +1,8 @@
 #Greenfoot project file
 class.Arrow.image=arrow.png
-class.Dagger.image=arrow.png
-class.MenuButton.image=button-red.png
+class.Dagger.image=dagger.png
+class.MenuBackground.image=main_menu.jpg
+class.MenuButton.image=start_button.png
 class.Metronome.image=button-blue.png
 class.TempoUnit.image=dagger.png
 class.adventurer.image=herz.png
