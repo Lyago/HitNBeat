@@ -24,9 +24,10 @@ public class MyWorld extends World
     private Score      score;
     private MenuButton button;
     private GameOver   gameOver;
+    private Completed   completed;
     private FinalScore finalScore;
     // Game state
-    private enum GameState{MENU,PLAYING,GAMEOVER};    
+    private enum GameState{MENU,PLAYING,GAMEOVER, COMPLETE};    
     private GameState state;
     
     /**
@@ -80,6 +81,9 @@ public class MyWorld extends World
     private void prepareGameOver(){
         // Clear the world
         removeObjects(getObjects(Actor.class)); 
+        
+        //Stop music
+        backgroundMusic.stop();
       
         // Add gameover screen
         gameOver = new GameOver();
@@ -88,8 +92,27 @@ public class MyWorld extends World
         // Add the final score
         int fscore = score.getScore();
         finalScore = new FinalScore(fscore);
-        addObject(finalScore,getWidth()-75,60);
-                                
+        addObject(finalScore,getWidth()/2,getHeight()/2);
+        
+        // Set the game state
+        state = GameState.GAMEOVER;           
+    }
+    private void prepareCompleted(){
+        // Clear the world
+        removeObjects(getObjects(Actor.class)); 
+        
+        //Stop music
+        backgroundMusic.stop();
+      
+        // Add gameover screen
+        completed = new Completed();
+        addObject(completed,getWidth()/2,getHeight()/2);
+        
+        // Add the final score
+        int fscore = score.getScore();
+        finalScore = new FinalScore(fscore);
+        addObject(finalScore,getWidth()/2,getHeight()/2);
+        
         // Set the game state
         state = GameState.GAMEOVER;           
     }
